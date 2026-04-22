@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="description" content="The official Always Your Beauty website — a collection of music, visuals and installations." />
+  <title>Always Your Beauty</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #070707;
+      overflow: hidden;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Josefin Sans', sans-serif;
+      cursor: none;
+      position: relative;
+    }
+
+    @media (hover: none) {
+      body { cursor: auto; }
+    }
+
+    #cursor-dot {
+      position: fixed;
+      width: 3px;
+      height: 3px;
+      background: #555;
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 100;
+    }
+
+    #drift-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    #main {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    #moon-stage {
+      margin-bottom: 52px;
+      line-height: 1.18;
+      letter-spacing: 1px;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: clamp(8px, 2.2vw, 12px);
+      white-space: pre;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    #moon-stage span {
+      display: inline-block;
+      transition: opacity 1.2s ease;
+    }
+
+    #ayb-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: clamp(11px, 3vw, 17px);
+      letter-spacing: clamp(5px, 1.5vw, 10px);
+      color: #c0c0c0;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fin 2s 1s forwards;
+      text-align: center;
+    }
+
+    #ayb-text {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      opacity: 0;
+      animation: fin 2.5s 2s forwards;
+      text-align: center;
+      padding: 0 1rem;
+    }
+
+    .ayb-line {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: clamp(9px, 2vw, 13px);
+      letter-spacing: clamp(3px, 1vw, 6px);
+      color: #c0c0c0;
+      text-transform: uppercase;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    #ayb-planet {
+      cursor: default;
+    }
+
+    #ayb-link {
+      text-decoration: none;
+      transition: color 0.5s ease;
+      cursor: pointer;
+    }
+
+    #ayb-link:hover,
+    #ayb-link:focus {
+      color: #ffffff;
+      outline: none;
+    }
+
+    #hint {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: clamp(6px, 1.2vw, 7px);
+      letter-spacing: 4px;
+      color: #1e1e1e;
+      text-transform: uppercase;
+      opacity: 0;
+      animation: fin 2s 4s forwards;
+      white-space: nowrap;
+      z-index: 2;
+    }
+
+    @media (hover: none) {
+      #hint { display: none; }
+    }
+
+    @keyframes fin { to { opacity: 1; } }
+  </style>
+</head>
+<body>
+
+  <div id="cursor-dot"></div>
+  <canvas id="drift-canvas"></canvas>
+
+  <div id="main">
+    <div id="moon-stage"></div>
+    <div id="ayb-title">Always Your Beauty</div>
+    <div id="ayb-options">
+      <div id="ayb-text">
+        <div class="ayb-line">Coming Soon</div>
+        <div class="ayb-line">Meanwhile, Click the Planet</div>
+        <div class="ayb-line">to Deconstruct ΜΕΛΑΓΧΟΛΙΑ</div>
+        <a class="ayb-line" id="ayb-link" href="https://bio.site/alwaysyourbeauty" target="_blank" rel="noopener">or listen to the AYB music</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="hint">bring your cursor to the moon</div>
+
+  <script>
+    const COLS = 36;
+    const ROWS = 20;
+    const CX = COLS / 2;
+    const CY = ROWS / 2;
+    const RX = 15.5;
+    const RY = 9.5;
+
+    const dense = '@$B0#&8%Wg'.split('');
+    const mid   = 'oa3eSDX=+;'.split('');
+    const light = ':,.-~^`\'  '.split('');
+
+    function charForPos(ci, ri) {
+      const dx = (ci - CX) / RX;
+      const dy = (ri - CY) / RY;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      if (d > 1) return ' ';
+      const edgeDist = 1 - d;
+      const shadeFactor = Math.pow(edgeDist, 0.5);
+      const lightAngle = Math.atan2(dy, dx);
+      const lightBias = (Math.cos(lightAngle + Math.PI * 0.25) + 1) / 2;
+      const combined = shadeFactor * 0.6 + lightBias * 0.4;
+      if (combined > 0.75) return dense[Math.floor(Math.random() * dense.length)];
+      if (combined > 0.45) return mid[Math.floor(Math.random() * mid.length)];
+      return light[Math.floor(Math.random() * light.length)];
+    }
+
+    function brightnessForPos(ci, ri) {
+      const dx = (ci - CX) / RX;
+      const dy = (ri - CY) / RY;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      if (d > 1) return null;
+      const edgeDist = 1 - d;
+      const lightAngle = Math.atan2(dy, dx);
+      const lightBias = (Math.cos(lightAngle + Math.PI * 0.25) + 1) / 2;
+      const combined = Math.pow(edgeDist, 0.5) * 0.6 + lightBias * 0.4;
+      const l = Math.round(40 + combined * 155);
+      return `rgb(${l},${l},${l})`;
+    }
+
+    const stage = document.getElementById('moon-stage');
+    const cursorDot = document.getElementById('cursor-dot');
+    const driftCanvas = document.getElementById('drift-canvas');
+    const dctx = driftCanvas.getContext('2d');
+    let spans = [];
+
+    function buildMoon() {
+      stage.innerHTML = '';
+      spans = [];
+      for (let ri = 0; ri < ROWS; ri++) {
+        const rowEl = document.createElement('div');
+        for (let ci = 0; ci < COLS; ci++) {
+          const ch = charForPos(ci, ri);
+          const col = brightnessForPos(ci, ri);
+          const sp = document.createElement('span');
+          sp.textContent = ch;
+          sp.dataset.orig = ch;
+          sp.dataset.col = col ?? '';
+          if (col) sp.style.color = col;
+          rowEl.appendChild(sp);
+          spans.push(sp);
+        }
+        stage.appendChild(rowEl);
+      }
+    }
+    buildMoon();
+
+    function resizeCanvas() {
+      driftCanvas.width = window.innerWidth;
+      driftCanvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
+
+    let driftParticles = [];
+    let mouse = { x: -9999, y: -9999 };
+    let lastSpawn = 0;
+    const greys = ['#b0b0b0','#c8c8c8','#989898','#d8d8d8','#888','#e0e0e0'];
+
+    const audio = new Audio('audio-clip.mp3');
+    audio.loop = true;
+    audio.volume = 0;
+    let audioUnlocked = false;
+    let targetVolume = 0;
+    let currentVolume = 0;
+    let activityLevel = 0;
+
+    function unlockAudio() {
+      if (!audioUnlocked) {
+        audio.play().then(() => {
+          audioUnlocked = true;
+        }).catch(() => {});
+      }
+    }
+
+    function updateAudio() {
+      currentVolume += (targetVolume - currentVolume) * 0.05;
+      audio.volume = Math.min(1, Math.max(0, currentVolume));
+      requestAnimationFrame(updateAudio);
+    }
+    updateAudio();
+
+    const allChars = '@$B0#&8%Wgoa3eSDX=+;:,.-~^`\''.split('');
+
+    function glitchChar(sp) {
+      const random = allChars[Math.floor(Math.random() * allChars.length)];
+      sp.textContent = random;
+      setTimeout(() => {
+        sp.textContent = sp.dataset.orig;
+      }, 80 + Math.random() * 120);
+    }
+
+    function spawnDrift(sp) {
+      const r = sp.getBoundingClientRect();
+      const x = r.left + r.width / 2;
+      const y = r.top + r.height / 2;
+      const ch = sp.dataset.orig.trim();
+      if (!ch) return;
+      driftParticles.push({
+        x, y,
+        vx: (Math.random() - 0.5) * 1.4,
+        vy: -0.5 - Math.random() * 0.8,
+        ch,
+        alpha: 1,
+        color: sp.dataset.col || greys[Math.floor(Math.random() * greys.length)],
+        size: 11 + Math.random() * 2,
+        life: 0,
+        maxLife: 65 + Math.random() * 85,
+        drift: (Math.random() - 0.5) * 0.02,
+      });
+    }
+
+    function tick(ts) {
+      dctx.clearRect(0, 0, driftCanvas.width, driftCanvas.height);
+
+      let activeCount = 0;
+
+      if (ts - lastSpawn > 55 && mouse.x > -999) {
+        spans.forEach(sp => {
+          if (!sp.dataset.orig.trim()) return;
+          const r = sp.getBoundingClientRect();
+          const cx = r.left + r.width / 2;
+          const cy = r.top + r.height / 2;
+          const dx = mouse.x - cx;
+          const dy = mouse.y - cy;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < 54) {
+            activeCount++;
+            if (Math.random() < 0.2) {
+              spawnDrift(sp);
+              glitchChar(sp);
+              sp.style.opacity = '0.08';
+              setTimeout(() => {
+                sp.style.opacity = '1';
+                sp.style.transition = 'opacity 1.6s ease';
+              }, 150 + Math.random() * 300);
+            } else if (Math.random() < 0.15) {
+              glitchChar(sp);
+            }
+          } else if (dist < 70 && Math.random() < 0.15) {
+            glitchChar(sp);
+          }
+        });
+        lastSpawn = ts;
+      }
+
+      if (activeCount > 0) {
+        targetVolume = Math.min(1, activeCount / 12);
+      } else {
+        targetVolume = 0;
+      }
+
+      driftParticles = driftParticles.filter(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vy += 0.005;
+        p.vx += p.drift;
+        p.life++;
+        const prog = p.life / p.maxLife;
+        p.alpha = prog < 0.12 ? prog / 0.12 : 1 - ((prog - 0.12) / 0.88);
+        if (p.life >= p.maxLife) return false;
+        dctx.save();
+        dctx.globalAlpha = p.alpha * 0.9;
+        dctx.font = `${Math.round(p.size)}px 'Courier New', monospace`;
+        dctx.fillStyle = p.color;
+        dctx.fillText(p.ch, p.x, p.y);
+        dctx.restore();
+        return true;
+      });
+
+      cursorDot.style.left = mouse.x + 'px';
+      cursorDot.style.top = mouse.y + 'px';
+      cursorDot.style.opacity = mouse.x > -999 ? '1' : '0';
+
+      requestAnimationFrame(tick);
+    }
+
+    document.addEventListener('mousemove', e => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+    document.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+    document.addEventListener('click', e => {
+      unlockAudio();
+    });
+
+    document.addEventListener('touchmove', e => {
+      e.preventDefault();
+      mouse.x = e.touches[0].clientX;
+      mouse.y = e.touches[0].clientY;
+    }, { passive: false });
+    document.addEventListener('touchend', () => {
+      setTimeout(() => { mouse.x = -9999; mouse.y = -9999; }, 800);
+    });
+
+    requestAnimationFrame(tick);
+  </script>
+</body>
+</html>
