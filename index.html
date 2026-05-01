@@ -39,6 +39,8 @@
       height: 48px;
       display: flex;
       align-items: center;
+      justify-content: flex-start;
+      gap: 48px;
       padding: 0 32px;
       background: #070707;
       z-index: 50;
@@ -76,6 +78,20 @@
         max-width: 180px;
       }
     }
+
+    .nav-link {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: #f0f0f0;
+      text-transform: uppercase;
+      text-decoration: none;
+      opacity: 0.6;
+      transition: opacity 0.4s ease;
+    }
+
+    .nav-link:hover { opacity: 1; }
 
     /* ── CURSOR ── */
     #cursor-dot {
@@ -217,6 +233,7 @@
     <a id="nav-logo" href="index.html" aria-label="Always Your Beauty — Home">
       <img src="AYB_Logo_Nav.svg" alt="Always Your Beauty" />
     </a>
+    <a class="nav-link" href="music-videos.html">Music Videos</a>
   </nav>
 
   <div id="cursor-dot"></div>
