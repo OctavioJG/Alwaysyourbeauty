@@ -14,23 +14,69 @@
       width: 100%;
       height: 100%;
       background: #070707;
-      overflow: hidden;
     }
 
     body {
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      min-height: 100vh;
       font-family: 'Josefin Sans', sans-serif;
       cursor: none;
       position: relative;
+      overflow-x: hidden;
     }
 
     @media (hover: none) {
       body { cursor: auto; }
     }
 
+    /* ── NAV ── */
+    #site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      padding: 0 32px;
+      background: #070707;
+      z-index: 50;
+    }
+
+    @media (max-width: 768px) {
+      #site-nav {
+        height: 56px;
+        padding: 0 24px;
+      }
+    }
+
+    #nav-logo {
+      display: block;
+      height: 28px;
+      width: auto;
+      opacity: 0.92;
+      transition: opacity 0.4s ease;
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      #nav-logo {
+        height: 32px;
+      }
+    }
+
+    #nav-logo:hover {
+      opacity: 1;
+    }
+
+    #nav-logo img {
+      height: 100%;
+      width: auto;
+      display: block;
+    }
+
+    /* ── CURSOR ── */
     #cursor-dot {
       position: fixed;
       width: 3px;
@@ -44,6 +90,7 @@
       z-index: 100;
     }
 
+    /* ── DRIFT CANVAS ── */
     #drift-canvas {
       position: fixed;
       inset: 0;
@@ -53,14 +100,16 @@
       z-index: 1;
     }
 
+    /* ── MAIN ── */
     #main {
       position: relative;
       z-index: 2;
+      flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 2rem 1rem;
+      padding: 80px 1rem 64px;
     }
 
     #moon-stage {
@@ -79,24 +128,12 @@
       transition: opacity 1.2s ease;
     }
 
-    #ayb-title {
-      font-family: 'Josefin Sans', sans-serif;
-      font-weight: 100;
-      font-size: clamp(11px, 3vw, 17px);
-      letter-spacing: clamp(5px, 1.5vw, 10px);
-      color: #c0c0c0;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-      opacity: 0;
-      animation: fin 2s 1s forwards;
-      text-align: center;
-    }
-
+    /* ── TEXT BLOCK ── */
     #ayb-text {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
       opacity: 0;
       animation: fin 2.5s 2s forwards;
       text-align: center;
@@ -106,33 +143,18 @@
     .ayb-line {
       font-family: 'Josefin Sans', sans-serif;
       font-weight: 100;
-      font-size: clamp(9px, 2vw, 13px);
-      letter-spacing: clamp(3px, 1vw, 6px);
-      color: #c0c0c0;
+      font-size: clamp(10px, 2.2vw, 14px);
+      letter-spacing: clamp(4px, 1.2vw, 8px);
+      color: #f0f0f0;
       text-transform: uppercase;
       text-align: center;
       white-space: nowrap;
     }
 
-    #ayb-planet {
-      cursor: default;
-    }
-
-    #ayb-link {
-      text-decoration: none;
-      transition: color 0.5s ease;
-      cursor: pointer;
-    }
-
-    #ayb-link:hover,
-    #ayb-link:focus {
-      color: #ffffff;
-      outline: none;
-    }
-
+    /* ── HINT ── */
     #hint {
       position: fixed;
-      bottom: 20px;
+      bottom: 56px;
       left: 50%;
       transform: translateX(-50%);
       font-family: 'Josefin Sans', sans-serif;
@@ -150,28 +172,71 @@
       #hint { display: none; }
     }
 
+    /* ── FOOTER ── */
+    #site-footer {
+      position: relative;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32px 32px;
+      border-top: 1px solid #1a1a1a;
+      background: #070707;
+    }
+
+    @media (max-width: 768px) {
+      #site-footer {
+        padding: 24px 24px;
+      }
+    }
+
+    .footer-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: clamp(8px, 1.2vw, 10px);
+      letter-spacing: 3px;
+      color: #f0f0f0;
+      text-transform: uppercase;
+      opacity: 0.5;
+      text-decoration: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .footer-text:hover {
+      opacity: 1;
+    }
+
     @keyframes fin { to { opacity: 1; } }
   </style>
 </head>
 <body>
 
+  <!-- NAV -->
+  <nav id="site-nav">
+    <a id="nav-logo" href="index.html" aria-label="Always Your Beauty — Home">
+      <img src="AYB_Logo_Nav.svg" alt="Always Your Beauty" />
+    </a>
+  </nav>
+
   <div id="cursor-dot"></div>
   <canvas id="drift-canvas"></canvas>
 
-  <div id="main">
+  <!-- MAIN -->
+  <main id="main">
     <div id="moon-stage"></div>
-    <div id="ayb-title">Always Your Beauty</div>
-    <div id="ayb-options">
-      <div id="ayb-text">
-        <div class="ayb-line">Coming Soon</div>
-        <div class="ayb-line">Meanwhile, Click the Planet</div>
-        <div class="ayb-line">to Deconstruct ΜΕΛΑΓΧΟΛΙΑ</div>
-        <a class="ayb-line" id="ayb-link" href="https://bio.site/alwaysyourbeauty" target="_blank" rel="noopener">or listen to the AYB music</a>
-      </div>
+    <div id="ayb-text">
+      <div class="ayb-line">Always Your Beauty</div>
+      <div class="ayb-line">Deconstruct ΜΕΛΑΓΧΟΛΙΑ</div>
     </div>
-  </div>
+  </main>
 
   <div id="hint">bring your cursor to the moon</div>
+
+  <!-- FOOTER -->
+  <footer id="site-footer">
+    <span class="footer-text">© Always Your Beauty</span>
+    <a class="footer-text" href="https://bio.site/alwaysyourbeauty" target="_blank" rel="noopener">Listen</a>
+  </footer>
 
   <script>
     const COLS = 36;
@@ -258,7 +323,6 @@
     let audioUnlocked = false;
     let targetVolume = 0;
     let currentVolume = 0;
-    let activityLevel = 0;
 
     function unlockAudio() {
       if (!audioUnlocked) {
