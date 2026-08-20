@@ -171,6 +171,7 @@
     /* ── FOOTER ── */
     #site-footer {
       display: flex;
+      flex-shrink: 0;
       align-items: center;
       justify-content: space-between;
       padding: 32px 32px;
@@ -187,7 +188,7 @@
     .footer-text {
       font-family: 'Josefin Sans', sans-serif;
       font-weight: 100;
-      font-size: clamp(8px, 1.2vw, 10px);
+      font-size: 12px;
       letter-spacing: 3px;
       color: #f0f0f0;
       text-transform: uppercase;
@@ -199,6 +200,16 @@
     .footer-text:hover { opacity: 1; }
 
     a.footer-text { opacity: 0.75; }
+
+    a.footer-text {
+      font-weight: 300;
+    }
+
+    @media (max-width: 768px) {
+      .footer-text {
+        font-size: 10px;
+      }
+    }
 
     @keyframes fin { to { opacity: 1; } }
   </style>
