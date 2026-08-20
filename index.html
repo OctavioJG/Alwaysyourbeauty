@@ -140,6 +140,12 @@
       -webkit-user-select: none;
     }
 
+    @media (min-width: 769px) {
+      #moon-stage {
+        font-size: 16px;
+      }
+    }
+
     #moon-stage span {
       display: inline-block;
       transition: opacity 1.2s ease;
@@ -194,6 +200,7 @@
       position: relative;
       z-index: 10;
       display: flex;
+      flex-shrink: 0;
       align-items: center;
       justify-content: space-between;
       padding: 32px 32px;
@@ -210,7 +217,7 @@
     .footer-text {
       font-family: 'Josefin Sans', sans-serif;
       font-weight: 100;
-      font-size: clamp(8px, 1.2vw, 10px);
+      font-size: 12px;
       letter-spacing: 3px;
       color: #f0f0f0;
       text-transform: uppercase;
@@ -222,6 +229,16 @@
     .footer-text:hover { opacity: 1; }
 
     a.footer-text { opacity: 0.75; }
+
+    a.footer-text {
+      font-weight: 300;
+    }
+
+    @media (max-width: 768px) {
+      .footer-text {
+        font-size: 10px;
+      }
+    }
 
     @keyframes fin { to { opacity: 1; } }
   </style>
@@ -335,28 +352,6 @@
     let lastSpawn = 0;
     const greys = ['#b0b0b0','#c8c8c8','#989898','#d8d8d8','#888','#e0e0e0'];
 
-    const audio = new Audio('audio-clip.mp3');
-    audio.loop = true;
-    audio.volume = 0;
-    let audioUnlocked = false;
-    let targetVolume = 0;
-    let currentVolume = 0;
-
-    function unlockAudio() {
-      if (!audioUnlocked) {
-        audio.play().then(() => {
-          audioUnlocked = true;
-        }).catch(() => {});
-      }
-    }
-
-    function updateAudio() {
-      currentVolume += (targetVolume - currentVolume) * 0.05;
-      audio.volume = Math.min(1, Math.max(0, currentVolume));
-      requestAnimationFrame(updateAudio);
-    }
-    updateAudio();
-
     const allChars = '@$B0#&8%Wgoa3eSDX=+;:,.-~^`\''.split('');
 
     function glitchChar(sp) {
@@ -390,8 +385,6 @@
     function tick(ts) {
       dctx.clearRect(0, 0, driftCanvas.width, driftCanvas.height);
 
-      let activeCount = 0;
-
       if (ts - lastSpawn > 55 && mouse.x > -999) {
         spans.forEach(sp => {
           if (!sp.dataset.orig.trim()) return;
@@ -402,7 +395,6 @@
           const dy = mouse.y - cy;
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 54) {
-            activeCount++;
             if (Math.random() < 0.2) {
               spawnDrift(sp);
               glitchChar(sp);
@@ -419,12 +411,6 @@
           }
         });
         lastSpawn = ts;
-      }
-
-      if (activeCount > 0) {
-        targetVolume = Math.min(1, activeCount / 12);
-      } else {
-        targetVolume = 0;
       }
 
       driftParticles = driftParticles.filter(p => {
@@ -457,10 +443,6 @@
       mouse.y = e.clientY;
     });
     document.addEventListener('mouseleave', () => { mouse.x = -9999; mouse.y = -9999; });
-
-    document.addEventListener('click', e => {
-      unlockAudio();
-    });
 
     document.addEventListener('touchmove', e => {
       e.preventDefault();
