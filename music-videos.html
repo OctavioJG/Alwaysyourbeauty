@@ -168,6 +168,30 @@
       opacity: 1;
     }
 
+    /* ── YOUTUBE BANNER ── */
+    .youtube-banner {
+      display: block;
+      grid-column: 1 / -1;
+      text-decoration: none;
+    }
+
+    .youtube-banner picture {
+      display: block;
+    }
+
+    .youtube-banner-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      opacity: 0.85;
+      transition: opacity 0.5s ease;
+    }
+
+    .youtube-banner:hover .video-label,
+    .youtube-banner:hover .youtube-banner-img {
+      opacity: 1;
+    }
+
     /* ── FOOTER ── */
     #site-footer {
       display: flex;
@@ -250,6 +274,14 @@
       <a class="video-item" href="https://www.youtube.com/watch?v=rBUIpHPwO6Y" target="_blank" rel="noopener">
         <div class="video-label">He-Witch</div>
         <img class="video-thumb" src="mv-he-witch.jpg" alt="He-Witch" />
+      </a>
+
+      <a class="youtube-banner" href="https://www.youtube.com/@alwaysyourbeauty" target="_blank" rel="noopener" aria-label="Explore the full Always Your Beauty video catalogue on YouTube">
+        <div class="video-label">Full Catalogue</div>
+        <picture>
+          <source media="(max-width: 768px)" srcset="mv-youtube-banner-mobile.jpg" />
+          <img class="youtube-banner-img" src="mv-youtube-banner-desktop.jpg" alt="Always Your Beauty video catalogue on YouTube" />
+        </picture>
       </a>
 
     </div>
