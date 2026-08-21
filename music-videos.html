@@ -23,6 +23,25 @@
       font-family: 'Josefin Sans', sans-serif;
     }
 
+    /* ── RESPONSIVE BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url('mv-background-desktop.jpg');
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @media (max-width: 768px) {
+      body::before {
+        background-image: url('mv-background-mobile.jpg');
+      }
+    }
+
     /* ── NAV ── */
     #site-nav {
       position: fixed;
@@ -93,6 +112,8 @@
 
     /* ── MAIN ── */
     main {
+      position: relative;
+      z-index: 1;
       flex: 1;
       padding: 80px 32px 64px;
     }
@@ -194,6 +215,8 @@
 
     /* ── FOOTER ── */
     #site-footer {
+      position: relative;
+      z-index: 1;
       display: flex;
       flex-shrink: 0;
       align-items: center;
