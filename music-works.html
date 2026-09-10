@@ -222,7 +222,7 @@
     }
 
     .catalogue-link,
-    .release-listen {
+    .release-action {
       font-family: 'Josefin Sans', sans-serif;
       font-weight: 300;
       font-size: 10px;
@@ -235,7 +235,48 @@
     }
 
     .catalogue-link:hover,
-    .release-listen:hover { opacity: 1; }
+    .release-action:hover { opacity: 1; }
+
+    .catalogue-link {
+      display: inline-block;
+      padding: 13px 18px 11px;
+      color: #070707;
+      background: #f0f0f0;
+      border: 1px solid #f0f0f0;
+      opacity: 1;
+      transition: color 0.35s ease, background 0.35s ease;
+    }
+
+    .catalogue-link:hover,
+    .catalogue-link:focus-visible {
+      color: #f0f0f0;
+      background: #070707;
+    }
+
+    .release-actions,
+    .mobile-release-actions {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .release-action.primary {
+      display: inline-block;
+      padding: 12px 16px 10px;
+      color: #070707;
+      background: #f0f0f0;
+      border: 1px solid #f0f0f0;
+      opacity: 1;
+      transition: color 0.35s ease, background 0.35s ease;
+    }
+
+    .release-action.primary:hover,
+    .release-action.primary:focus-visible {
+      color: #f0f0f0;
+      background: transparent;
+    }
+
+    .mobile-release-actions { display: none; }
 
     #release-list {
       display: flex;
@@ -341,6 +382,22 @@
       .release-card { display: block; }
 
       .release-copy { display: none; }
+
+      .mobile-release-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding-top: 16px;
+      }
+
+      .mobile-release-actions .release-action {
+        font-size: 9px;
+        letter-spacing: 2px;
+      }
+
+      .mobile-release-actions .release-action.primary {
+        padding: 10px 12px 8px;
+      }
     }
 
     /* ── FOOTER ── */
@@ -393,6 +450,7 @@
     <div id="nav-links">
       <a class="nav-link active" href="music-works.html">Music Works</a>
       <a class="nav-link" href="music-videos.html">Music Videos</a>
+      <a class="nav-link" href="https://www.subvert.fm/always-your-beauty" target="_blank" rel="noopener">Music Store</a>
     </div>
     <button id="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
       <span></span>
@@ -403,7 +461,7 @@
   <div id="mobile-menu" aria-hidden="true">
     <a class="mobile-nav-link active" href="music-works.html">Music Works</a>
     <a class="mobile-nav-link" href="music-videos.html">Music Videos</a>
-    <a class="mobile-nav-link" href="https://bio.site/alwaysyourbeauty" target="_blank" rel="noopener">Listen</a>
+    <a class="mobile-nav-link" href="https://www.subvert.fm/always-your-beauty" target="_blank" rel="noopener">Music Store</a>
   </div>
 
   <!-- MAIN -->
@@ -412,8 +470,7 @@
       <h1 id="page-title">Music Works</h1>
 
       <div id="catalogue-links">
-        <a class="catalogue-link" href="https://alwaysyourbeauty.bandcamp.com/" target="_blank" rel="noopener">Bandcamp</a>
-        <a class="catalogue-link" href="https://www.subvert.fm/always-your-beauty" target="_blank" rel="noopener">Subvert Store</a>
+        <a class="catalogue-link" href="https://www.subvert.fm/always-your-beauty" target="_blank" rel="noopener">Visit Music Store</a>
       </div>
 
       <div id="release-list">
@@ -421,70 +478,105 @@
         <article class="release-item">
           <h2 class="release-title">Ballet Dance Curse</h2>
           <div class="release-card">
-            <a class="release-cover-link" href="https://hypeddit.com/mcr0be" target="_blank" rel="noopener" aria-label="Listen to Ballet Dance Curse">
+            <a class="release-cover-link" href="https://www.subvert.fm/always-your-beauty/ballet-dance-curse" target="_blank" rel="noopener" aria-label="Buy Ballet Dance Curse on Subvert">
               <img class="release-cover" src="mw-ballet-dance-curse.jpg" alt="Ballet Dance Curse cover artwork" />
             </a>
             <div class="release-copy">
               <div class="release-meta">EP · 2026 · CCL-011</div>
               <p class="release-commentary">Born from a series of text-message conversations with artist Robert Torbica, this collection reimagines songs that have either disappeared from streaming platforms or were never officially released. Removed from their original context, they return as distant, altered versions of themselves, like mirages of what they once were or might have become.</p>
-              <a class="release-listen" href="https://hypeddit.com/mcr0be" target="_blank" rel="noopener">Listen</a>
+              <div class="release-actions">
+                <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/ballet-dance-curse" target="_blank" rel="noopener">Buy on Subvert</a>
+                <a class="release-action" href="https://hypeddit.com/mcr0be" target="_blank" rel="noopener">Other Platforms</a>
+              </div>
             </div>
+          </div>
+          <div class="mobile-release-actions">
+            <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/ballet-dance-curse" target="_blank" rel="noopener">Buy on Subvert</a>
+            <a class="release-action" href="https://hypeddit.com/mcr0be" target="_blank" rel="noopener">Other Platforms</a>
           </div>
         </article>
 
         <article class="release-item">
           <h2 class="release-title">Sadness Fever</h2>
           <div class="release-card">
-            <a class="release-cover-link" href="https://hypeddit.com/8rxtm4" target="_blank" rel="noopener" aria-label="Listen to Sadness Fever">
+            <a class="release-cover-link" href="https://www.subvert.fm/always-your-beauty/sadness-fever" target="_blank" rel="noopener" aria-label="Buy Sadness Fever on Subvert">
               <img class="release-cover" src="mw-sadness-fever.jpg" alt="Sadness Fever cover artwork" />
             </a>
             <div class="release-copy">
               <div class="release-meta">Album · 2024 · CCL-009</div>
               <p class="release-commentary">The first album released under the Always Your Beauty name captures an incarnation of the project that desperately tried to become a full band, shaped by external pressure to meet the expectations of the local live scene. Though created under strain, its songs explore different forms of sadness with vibrant energy. Together, they gave life to a fictional band that existed only briefly.</p>
-              <a class="release-listen" href="https://hypeddit.com/8rxtm4" target="_blank" rel="noopener">Listen</a>
+              <div class="release-actions">
+                <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/sadness-fever" target="_blank" rel="noopener">Buy on Subvert</a>
+                <a class="release-action" href="https://hypeddit.com/8rxtm4" target="_blank" rel="noopener">Other Platforms</a>
+              </div>
             </div>
+          </div>
+          <div class="mobile-release-actions">
+            <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/sadness-fever" target="_blank" rel="noopener">Buy on Subvert</a>
+            <a class="release-action" href="https://hypeddit.com/8rxtm4" target="_blank" rel="noopener">Other Platforms</a>
           </div>
         </article>
 
         <article class="release-item">
           <h2 class="release-title">Octagramophone</h2>
           <div class="release-card">
-            <a class="release-cover-link" href="https://hypeddit.com/rzmevu" target="_blank" rel="noopener" aria-label="Listen to Octagramophone">
+            <a class="release-cover-link" href="https://www.subvert.fm/always-your-beauty/octagramophone" target="_blank" rel="noopener" aria-label="Buy Octagramophone on Subvert">
               <img class="release-cover" src="mw-octagramophone.jpg" alt="Octagramophone cover artwork" />
             </a>
             <div class="release-copy">
               <div class="release-meta">EP · 2022 · CCL-008</div>
               <p class="release-commentary">This series of songs reinforced the project’s incarnation-based format, bringing together longtime collaborators Adam Garner and Michael Farina with musicians who, at that point, had only met online. Written collectively across distances, the songs explore raw and personal themes through an unlikely blend of mariachi, goth-punk, and alternative rock.</p>
-              <a class="release-listen" href="https://hypeddit.com/rzmevu" target="_blank" rel="noopener">Listen</a>
+              <div class="release-actions">
+                <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/octagramophone" target="_blank" rel="noopener">Buy on Subvert</a>
+                <a class="release-action" href="https://hypeddit.com/rzmevu" target="_blank" rel="noopener">Other Platforms</a>
+              </div>
             </div>
+          </div>
+          <div class="mobile-release-actions">
+            <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/octagramophone" target="_blank" rel="noopener">Buy on Subvert</a>
+            <a class="release-action" href="https://hypeddit.com/rzmevu" target="_blank" rel="noopener">Other Platforms</a>
           </div>
         </article>
 
         <article class="release-item">
           <h2 class="release-title">Birmingham Blues</h2>
           <div class="release-card">
-            <a class="release-cover-link" href="https://hypeddit.com/b59gg2" target="_blank" rel="noopener" aria-label="Listen to Birmingham Blues">
+            <a class="release-cover-link" href="https://www.subvert.fm/always-your-beauty/birmingham-blues" target="_blank" rel="noopener" aria-label="Buy Birmingham Blues on Subvert">
               <img class="release-cover" src="mw-birmingham-blues.jpg" alt="Birmingham Blues cover artwork" />
             </a>
             <div class="release-copy">
               <div class="release-meta">EP · 2021 · CCL-007</div>
               <p class="release-commentary">These songs celebrate the creative connection between Octavio Juarez and Adam Garner, who first met through Reddit. Living on different continents, they used digital platforms to exchange ideas and write together across the distance. This EP brings together the first three songs from that ongoing collaboration, celebrating the friendships that can grow online and become deeply real.</p>
-              <a class="release-listen" href="https://hypeddit.com/b59gg2" target="_blank" rel="noopener">Listen</a>
+              <div class="release-actions">
+                <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/birmingham-blues" target="_blank" rel="noopener">Buy on Subvert</a>
+                <a class="release-action" href="https://hypeddit.com/b59gg2" target="_blank" rel="noopener">Other Platforms</a>
+              </div>
             </div>
+          </div>
+          <div class="mobile-release-actions">
+            <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/birmingham-blues" target="_blank" rel="noopener">Buy on Subvert</a>
+            <a class="release-action" href="https://hypeddit.com/b59gg2" target="_blank" rel="noopener">Other Platforms</a>
           </div>
         </article>
 
         <article class="release-item">
           <h2 class="release-title">Hybernesque</h2>
           <div class="release-card">
-            <a class="release-cover-link" href="https://hypeddit.com/u6kc0l" target="_blank" rel="noopener" aria-label="Listen to Hybernesque">
+            <a class="release-cover-link" href="https://www.subvert.fm/always-your-beauty/hybernesque" target="_blank" rel="noopener" aria-label="Buy Hybernesque on Subvert">
               <img class="release-cover" src="mw-hybernesque.jpg" alt="Hybernesque cover artwork" />
             </a>
             <div class="release-copy">
               <div class="release-meta">EP · 2020 · CCL-006</div>
               <p class="release-commentary">This EP marks a turning point for Octavio Juarez as a singer, songwriter, and producer. Across these recordings, he confronts his insecurities around recording and production, along with the fear of embracing a solo path. In doing so, he lays the groundwork for what would become a malleable, incarnation-based collective. These songs form the true foundation of the project’s sound.</p>
-              <a class="release-listen" href="https://hypeddit.com/u6kc0l" target="_blank" rel="noopener">Listen</a>
+              <div class="release-actions">
+                <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/hybernesque" target="_blank" rel="noopener">Buy on Subvert</a>
+                <a class="release-action" href="https://hypeddit.com/u6kc0l" target="_blank" rel="noopener">Other Platforms</a>
+              </div>
             </div>
+          </div>
+          <div class="mobile-release-actions">
+            <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/hybernesque" target="_blank" rel="noopener">Buy on Subvert</a>
+            <a class="release-action" href="https://hypeddit.com/u6kc0l" target="_blank" rel="noopener">Other Platforms</a>
           </div>
         </article>
 
@@ -495,7 +587,7 @@
   <!-- FOOTER -->
   <footer id="site-footer">
     <span class="footer-text">© Always Your Beauty</span>
-    <a class="footer-text" href="https://bio.site/alwaysyourbeauty" target="_blank" rel="noopener">Listen</a>
+    <a class="footer-text" href="https://bio.site/alwaysyourbeauty" target="_blank" rel="noopener">Music + Socials</a>
   </footer>
 
   <script>
