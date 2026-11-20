@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="description" content="Music Works — Always Your Beauty releases, albums and EPs." />
+  <title>Music Works — Always Your Beauty</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      background: #070707;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      font-family: 'Josefin Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── RESPONSIVE BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url('/mw-background-desktop.jpg');
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @media (max-width: 768px) {
+      body::before {
+        background-image: url('/mw-background-mobile.jpg');
+      }
+    }
+
+    /* ── NAV ── */
+    #site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 48px;
+      padding: 0 32px;
+      background: #070707;
+      z-index: 50;
+    }
+
+    #nav-logo {
+      display: block;
+      opacity: 0.92;
+      transition: opacity 0.4s ease;
+      text-decoration: none;
+      line-height: 0;
+    }
+
+    #nav-logo:hover { opacity: 1; }
+
+    #nav-logo img {
+      display: block;
+      width: auto;
+      height: 14px;
+      max-width: 240px;
+    }
+
+    #nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .nav-link {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: #f0f0f0;
+      text-transform: uppercase;
+      text-decoration: none;
+      opacity: 0.6;
+      transition: opacity 0.4s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active { opacity: 1; }
+
+    #menu-toggle {
+      display: none;
+      width: 24px;
+      height: 24px;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 6px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    #menu-toggle span {
+      display: block;
+      width: 18px;
+      height: 1px;
+      background: #f0f0f0;
+      transition: transform 0.35s ease;
+    }
+
+    #mobile-menu { display: none; }
+
+    @media (max-width: 768px) {
+      #site-nav {
+        height: 56px;
+        justify-content: space-between;
+        gap: 0;
+        padding: 0 24px;
+      }
+
+      #nav-logo img {
+        height: 12px;
+        max-width: 180px;
+      }
+
+      #nav-links { display: none; }
+
+      #menu-toggle { display: flex; }
+
+      #menu-toggle.open span:first-child {
+        transform: translateY(3.5px) rotate(45deg);
+      }
+
+      #menu-toggle.open span:last-child {
+        transform: translateY(-3.5px) rotate(-45deg);
+      }
+
+      #mobile-menu {
+        position: fixed;
+        top: 56px;
+        left: 0;
+        right: 0;
+        z-index: 49;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        padding: 28px 24px 32px;
+        background: #070707;
+        border-top: 1px solid #111;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      #mobile-menu.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .mobile-nav-link {
+        font-family: 'Josefin Sans', sans-serif;
+        font-weight: 300;
+        font-size: 10px;
+        letter-spacing: 3px;
+        color: #f0f0f0;
+        text-transform: uppercase;
+        text-decoration: none;
+        opacity: 0.75;
+      }
+
+      .mobile-nav-link.active { opacity: 1; }
+    }
+
+    /* ── MAIN ── */
+    main {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      padding: 80px 32px 64px;
+    }
+
+    .works-inner {
+      width: 100%;
+      max-width: 1248px;
+      margin: 0 auto;
+    }
+
+    #page-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: clamp(14px, 2vw, 18px);
+      letter-spacing: clamp(4px, 1.2vw, 8px);
+      color: #f0f0f0;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fin 1.5s 0.3s forwards;
+    }
+
+    #catalogue-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      margin-bottom: 80px;
+      opacity: 0;
+      animation: fin 1.5s 0.45s forwards;
+    }
+
+    .catalogue-link,
+    .release-action {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: #f0f0f0;
+      text-transform: uppercase;
+      text-decoration: none;
+      opacity: 0.75;
+      transition: opacity 0.4s ease;
+    }
+
+    .catalogue-link:hover,
+    .release-action:hover { opacity: 1; }
+
+    .catalogue-link {
+      display: inline-block;
+      padding: 13px 18px 11px;
+      color: #070707;
+      background: #f0f0f0;
+      border: 1px solid #f0f0f0;
+      opacity: 1;
+      transition: color 0.35s ease, background 0.35s ease;
+    }
+
+    .catalogue-link:hover,
+    .catalogue-link:focus-visible {
+      color: #f0f0f0;
+      background: #070707;
+    }
+
+    .release-actions,
+    .mobile-release-actions {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .release-action.primary {
+      display: inline-block;
+      padding: 12px 16px 10px;
+      color: #070707;
+      background: #f0f0f0;
+      border: 1px solid #f0f0f0;
+      opacity: 1;
+      transition: color 0.35s ease, background 0.35s ease;
+    }
+
+    .release-action.primary:hover,
+    .release-action.primary:focus-visible {
+      color: #f0f0f0;
+      background: transparent;
+    }
+
+    .mobile-release-actions { display: none; }
+
+    #release-list {
+      display: flex;
+      flex-direction: column;
+      gap: 64px;
+      opacity: 0;
+      animation: fin 1.5s 0.6s forwards;
+    }
+
+    .release-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: #f0f0f0;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      opacity: 0.75;
+    }
+
+    .release-card {
+      display: grid;
+      grid-template-columns: minmax(280px, 40%) 1fr;
+      align-items: stretch;
+    }
+
+    .release-cover-link {
+      display: block;
+      line-height: 0;
+      background: #070707;
+    }
+
+    .release-cover {
+      display: block;
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      opacity: 0.9;
+      transition: opacity 0.5s ease;
+    }
+
+    .release-cover-link:hover .release-cover { opacity: 1; }
+
+    .release-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+      padding: clamp(28px, 4vw, 56px);
+      background: rgba(7, 7, 7, 0.92);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+    }
+
+    .release-meta {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: 10px;
+      line-height: 1.8;
+      letter-spacing: 3px;
+      color: #f0f0f0;
+      text-transform: uppercase;
+      opacity: 0.72;
+      margin-bottom: 22px;
+    }
+
+    .release-commentary {
+      max-width: 680px;
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: clamp(12px, 1.1vw, 14px);
+      line-height: 1.75;
+      letter-spacing: 0.6px;
+      color: #f0f0f0;
+      opacity: 0.82;
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        padding: 88px 24px 48px;
+      }
+
+      #page-title { margin-bottom: 20px; }
+
+      #catalogue-links {
+        gap: 24px;
+        margin-bottom: 56px;
+      }
+
+      .catalogue-link {
+        font-size: 9px;
+        letter-spacing: 2.5px;
+      }
+
+      #release-list { gap: 48px; }
+
+      .release-title {
+        font-size: 11px;
+        letter-spacing: 4px;
+      }
+
+      .release-card { display: block; }
+
+      .release-copy { display: none; }
+
+      .mobile-release-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding-top: 16px;
+      }
+
+      .mobile-release-actions .release-action {
+        font-size: 9px;
+        letter-spacing: 2px;
+      }
+
+      .mobile-release-actions .release-action.primary {
+        padding: 10px 12px 8px;
+      }
+    }
+
+    /* ── FOOTER ── */
+    #site-footer {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32px;
+      border-top: 1px solid #1a1a1a;
+      background: #070707;
+    }
+
+    .footer-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: #f0f0f0;
+      text-transform: uppercase;
+      opacity: 0.5;
+      text-decoration: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .footer-text:hover { opacity: 1; }
+
+    a.footer-text {
+      font-weight: 300;
+      opacity: 0.75;
+    }
+
+    @media (max-width: 768px) {
+      #site-footer { padding: 24px; }
+      .footer-text { font-size: 10px; }
+    }
+
+    @keyframes fin { to { opacity: 1; } }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="site-nav">
+    <a id="nav-logo" href="/" aria-label="Always Your Beauty — Home">
+      <img src="/AYB_Logo_Nav.svg" alt="Always Your Beauty" />
+    </a>
+    <div id="nav-links">
+      <a class="nav-link active" href="/music-works/">Music Works</a>
+      <a class="nav-link" href="/music-videos/">Music Videos</a>
+      <a class="nav-link" href="https://www.subvert.fm/always-your-beauty" target="_blank" rel="noopener">Music Store</a>
+    </div>
+    <button id="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <div id="mobile-menu" aria-hidden="true">
+    <a class="mobile-nav-link active" href="/music-works/">Music Works</a>
+    <a class="mobile-nav-link" href="/music-videos/">Music Videos</a>
+    <a class="mobile-nav-link" href="https://www.subvert.fm/always-your-beauty" target="_blank" rel="noopener">Music Store</a>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+    <div class="works-inner">
+      <h1 id="page-title">Music Works</h1>
+
+      <div id="catalogue-links">
+        <a class="catalogue-link" href="https://www.subvert.fm/always-your-beauty" target="_blank" rel="noopener">Visit Music Store</a>
+      </div>
+
+      <div id="release-list">
+
+        <article class="release-item">
+          <h2 class="release-title">Ballet Dance Curse</h2>
+          <div class="release-card">
+            <a class="release-cover-link" href="https://www.subvert.fm/always-your-beauty/ballet-dance-curse" target="_blank" rel="noopener" aria-label="Buy Ballet Dance Curse on Subvert">
+              <img class="release-cover" src="/mw-ballet-dance-curse.jpg" alt="Ballet Dance Curse cover artwork" />
+            </a>
+            <div class="release-copy">
+              <div class="release-meta">EP · 2026 · CCL-011</div>
+              <p class="release-commentary">Born from a series of text-message conversations with artist Robert Torbica, this collection reimagines songs that have either disappeared from streaming platforms or were never officially released. Removed from their original context, they return as distant, altered versions of themselves, like mirages of what they once were or might have become.</p>
+              <div class="release-actions">
+                <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/ballet-dance-curse" target="_blank" rel="noopener">Buy on Subvert</a>
+                <a class="release-action" href="https://hypeddit.com/mcr0be" target="_blank" rel="noopener">Other Platforms</a>
+              </div>
+            </div>
+          </div>
+          <div class="mobile-release-actions">
+            <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/ballet-dance-curse" target="_blank" rel="noopener">Buy on Subvert</a>
+            <a class="release-action" href="https://hypeddit.com/mcr0be" target="_blank" rel="noopener">Other Platforms</a>
+          </div>
+        </article>
+
+        <article class="release-item">
+          <h2 class="release-title">Sadness Fever</h2>
+          <div class="release-card">
+            <a class="release-cover-link" href="https://www.subvert.fm/always-your-beauty/sadness-fever" target="_blank" rel="noopener" aria-label="Buy Sadness Fever on Subvert">
+              <img class="release-cover" src="/mw-sadness-fever.jpg" alt="Sadness Fever cover artwork" />
+            </a>
+            <div class="release-copy">
+              <div class="release-meta">Album · 2024 · CCL-009</div>
+              <p class="release-commentary">The first album released under the Always Your Beauty name captures an incarnation of the project that desperately tried to become a full band, shaped by external pressure to meet the expectations of the local live scene. Though created under strain, its songs explore different forms of sadness with vibrant energy. Together, they gave life to a fictional band that existed only briefly.</p>
+              <div class="release-actions">
+                <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/sadness-fever" target="_blank" rel="noopener">Buy on Subvert</a>
+                <a class="release-action" href="https://hypeddit.com/8rxtm4" target="_blank" rel="noopener">Other Platforms</a>
+              </div>
+            </div>
+          </div>
+          <div class="mobile-release-actions">
+            <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/sadness-fever" target="_blank" rel="noopener">Buy on Subvert</a>
+            <a class="release-action" href="https://hypeddit.com/8rxtm4" target="_blank" rel="noopener">Other Platforms</a>
+          </div>
+        </article>
+
+        <article class="release-item">
+          <h2 class="release-title">Octagramophone</h2>
+          <div class="release-card">
+            <a class="release-cover-link" href="https://www.subvert.fm/always-your-beauty/octagramophone" target="_blank" rel="noopener" aria-label="Buy Octagramophone on Subvert">
+              <img class="release-cover" src="/mw-octagramophone.jpg" alt="Octagramophone cover artwork" />
+            </a>
+            <div class="release-copy">
+              <div class="release-meta">EP · 2022 · CCL-008</div>
+              <p class="release-commentary">This series of songs reinforced the project’s incarnation-based format, bringing together longtime collaborators Adam Garner and Michael Farina with musicians who, at that point, had only met online. Written collectively across distances, the songs explore raw and personal themes through an unlikely blend of mariachi, goth-punk, and alternative rock.</p>
+              <div class="release-actions">
+                <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/octagramophone" target="_blank" rel="noopener">Buy on Subvert</a>
+                <a class="release-action" href="https://hypeddit.com/rzmevu" target="_blank" rel="noopener">Other Platforms</a>
+              </div>
+            </div>
+          </div>
+          <div class="mobile-release-actions">
+            <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/octagramophone" target="_blank" rel="noopener">Buy on Subvert</a>
+            <a class="release-action" href="https://hypeddit.com/rzmevu" target="_blank" rel="noopener">Other Platforms</a>
+          </div>
+        </article>
+
+        <article class="release-item">
+          <h2 class="release-title">Birmingham Blues</h2>
+          <div class="release-card">
+            <a class="release-cover-link" href="https://www.subvert.fm/always-your-beauty/birmingham-blues" target="_blank" rel="noopener" aria-label="Buy Birmingham Blues on Subvert">
+              <img class="release-cover" src="/mw-birmingham-blues.jpg" alt="Birmingham Blues cover artwork" />
+            </a>
+            <div class="release-copy">
+              <div class="release-meta">EP · 2021 · CCL-007</div>
+              <p class="release-commentary">These songs celebrate the creative connection between Octavio Juarez and Adam Garner, who first met through Reddit. Living on different continents, they used digital platforms to exchange ideas and write together across the distance. This EP brings together the first three songs from that ongoing collaboration, celebrating the friendships that can grow online and become deeply real.</p>
+              <div class="release-actions">
+                <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/birmingham-blues" target="_blank" rel="noopener">Buy on Subvert</a>
+                <a class="release-action" href="https://hypeddit.com/b59gg2" target="_blank" rel="noopener">Other Platforms</a>
+              </div>
+            </div>
+          </div>
+          <div class="mobile-release-actions">
+            <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/birmingham-blues" target="_blank" rel="noopener">Buy on Subvert</a>
+            <a class="release-action" href="https://hypeddit.com/b59gg2" target="_blank" rel="noopener">Other Platforms</a>
+          </div>
+        </article>
+
+        <article class="release-item">
+          <h2 class="release-title">Hybernesque</h2>
+          <div class="release-card">
+            <a class="release-cover-link" href="https://www.subvert.fm/always-your-beauty/hybernesque" target="_blank" rel="noopener" aria-label="Buy Hybernesque on Subvert">
+              <img class="release-cover" src="/mw-hybernesque.jpg" alt="Hybernesque cover artwork" />
+            </a>
+            <div class="release-copy">
+              <div class="release-meta">EP · 2020 · CCL-006</div>
+              <p class="release-commentary">This EP marks a turning point for Octavio Juarez as a singer, songwriter, and producer. Across these recordings, he confronts his insecurities around recording and production, along with the fear of embracing a solo path. In doing so, he lays the groundwork for what would become a malleable, incarnation-based collective. These songs form the true foundation of the project’s sound.</p>
+              <div class="release-actions">
+                <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/hybernesque" target="_blank" rel="noopener">Buy on Subvert</a>
+                <a class="release-action" href="https://hypeddit.com/u6kc0l" target="_blank" rel="noopener">Other Platforms</a>
+              </div>
+            </div>
+          </div>
+          <div class="mobile-release-actions">
+            <a class="release-action primary" href="https://www.subvert.fm/always-your-beauty/hybernesque" target="_blank" rel="noopener">Buy on Subvert</a>
+            <a class="release-action" href="https://hypeddit.com/u6kc0l" target="_blank" rel="noopener">Other Platforms</a>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="site-footer">
+    <span class="footer-text">© Always Your Beauty</span>
+    <a class="footer-text" href="https://bio.site/alwaysyourbeauty" target="_blank" rel="noopener">Music + Socials</a>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    function setMenuOpen(open) {
+      menuToggle.classList.toggle('open', open);
+      mobileMenu.classList.toggle('open', open);
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      mobileMenu.setAttribute('aria-hidden', String(!open));
+    }
+
+    menuToggle.addEventListener('click', () => {
+      setMenuOpen(!mobileMenu.classList.contains('open'));
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => setMenuOpen(false));
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) setMenuOpen(false);
+    });
+  </script>
+
+</body>
+</html>

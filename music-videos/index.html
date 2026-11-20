@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="description" content="Music Videos — Always Your Beauty" />
+  <title>Music Videos — Always Your Beauty</title>
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@100;200;300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100%;
+      min-height: 100%;
+      background: #070707;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      font-family: 'Josefin Sans', sans-serif;
+    }
+
+    /* ── RESPONSIVE BACKGROUND ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url('/mv-background-desktop.jpg');
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @media (max-width: 768px) {
+      body::before {
+        background-image: url('/mv-background-mobile.jpg');
+      }
+    }
+
+    /* ── NAV ── */
+    #site-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 48px;
+      padding: 0 32px;
+      background: #070707;
+      z-index: 50;
+    }
+
+    @media (max-width: 768px) {
+      #site-nav {
+        height: 56px;
+        padding: 0 24px;
+      }
+    }
+
+    #nav-logo {
+      display: block;
+      opacity: 0.92;
+      transition: opacity 0.4s ease;
+      text-decoration: none;
+      line-height: 0;
+    }
+
+    #nav-logo:hover { opacity: 1; }
+
+    #nav-logo img {
+      height: 14px;
+      width: auto;
+      display: block;
+      max-width: 240px;
+    }
+
+    @media (max-width: 768px) {
+      #nav-logo img {
+        height: 12px;
+        max-width: 180px;
+      }
+    }
+
+    #nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .nav-link {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: #f0f0f0;
+      text-transform: uppercase;
+      text-decoration: none;
+      opacity: 0.6;
+      transition: opacity 0.4s ease;
+    }
+
+    .nav-link:hover,
+    .nav-link.active { opacity: 1; }
+
+    #menu-toggle {
+      display: none;
+      width: 24px;
+      height: 24px;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 6px;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    #menu-toggle span {
+      display: block;
+      width: 18px;
+      height: 1px;
+      background: #f0f0f0;
+      transition: transform 0.35s ease;
+    }
+
+    #mobile-menu { display: none; }
+
+    @media (max-width: 768px) {
+      #site-nav {
+        justify-content: space-between;
+        gap: 0;
+      }
+
+      #nav-links { display: none; }
+
+      #menu-toggle { display: flex; }
+
+      #menu-toggle.open span:first-child {
+        transform: translateY(3.5px) rotate(45deg);
+      }
+
+      #menu-toggle.open span:last-child {
+        transform: translateY(-3.5px) rotate(-45deg);
+      }
+
+      #mobile-menu {
+        position: fixed;
+        top: 56px;
+        left: 0;
+        right: 0;
+        z-index: 49;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        padding: 28px 24px 32px;
+        background: #070707;
+        border-top: 1px solid #111;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+
+      #mobile-menu.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .mobile-nav-link {
+        font-family: 'Josefin Sans', sans-serif;
+        font-weight: 300;
+        font-size: 10px;
+        letter-spacing: 3px;
+        color: #f0f0f0;
+        text-transform: uppercase;
+        text-decoration: none;
+        opacity: 0.75;
+      }
+
+      .mobile-nav-link.active { opacity: 1; }
+    }
+
+    /* ── MAIN ── */
+    main {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      padding: 80px 32px 64px;
+    }
+
+    @media (max-width: 768px) {
+      main {
+        padding: 80px 24px 48px;
+      }
+    }
+
+    /* ── PAGE TITLE ── */
+    #page-title {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: clamp(14px, 2vw, 18px);
+      letter-spacing: clamp(4px, 1.2vw, 8px);
+      color: #f0f0f0;
+      text-transform: uppercase;
+      margin-bottom: 80px;
+      opacity: 0;
+      animation: fin 1.5s 0.3s forwards;
+    }
+
+    /* ── VIDEO GRID ── */
+    #video-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px 40px;
+      opacity: 0;
+      animation: fin 1.5s 0.6s forwards;
+    }
+
+    @media (max-width: 768px) {
+      #video-grid {
+        grid-template-columns: 1fr;
+        gap: 48px;
+      }
+    }
+
+    /* ── VIDEO ITEM ── */
+    .video-item {
+      display: block;
+      text-decoration: none;
+    }
+
+    .video-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: clamp(9px, 1.2vw, 11px);
+      letter-spacing: clamp(3px, 0.8vw, 5px);
+      color: #f0f0f0;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      opacity: 0.7;
+      transition: opacity 0.4s ease;
+    }
+
+    .video-item:hover .video-label {
+      opacity: 1;
+    }
+
+    .video-thumb {
+      display: block;
+      width: 100%;
+      aspect-ratio: 624 / 202;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0.85;
+      transition: opacity 0.5s ease;
+    }
+
+    .video-item:hover .video-thumb {
+      opacity: 1;
+    }
+
+    /* ── YOUTUBE BANNER ── */
+    .youtube-banner {
+      display: block;
+      grid-column: 1 / -1;
+      text-decoration: none;
+    }
+
+    .youtube-banner picture {
+      display: block;
+    }
+
+    .youtube-banner-img {
+      display: block;
+      width: 100%;
+      height: auto;
+      opacity: 0.85;
+      transition: opacity 0.5s ease;
+    }
+
+    .youtube-banner:hover .video-label,
+    .youtube-banner:hover .youtube-banner-img {
+      opacity: 1;
+    }
+
+    /* ── FOOTER ── */
+    #site-footer {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-shrink: 0;
+      align-items: center;
+      justify-content: space-between;
+      padding: 32px 32px;
+      border-top: 1px solid #1a1a1a;
+      background: #070707;
+    }
+
+    @media (max-width: 768px) {
+      #site-footer {
+        padding: 24px 24px;
+      }
+    }
+
+    .footer-text {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 100;
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: #f0f0f0;
+      text-transform: uppercase;
+      opacity: 0.5;
+      text-decoration: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .footer-text:hover { opacity: 1; }
+
+    a.footer-text { opacity: 0.75; }
+
+    a.footer-text {
+      font-weight: 300;
+    }
+
+    @media (max-width: 768px) {
+      .footer-text {
+        font-size: 10px;
+      }
+    }
+
+    @keyframes fin { to { opacity: 1; } }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="site-nav">
+    <a id="nav-logo" href="/" aria-label="Always Your Beauty — Home">
+      <img src="/AYB_Logo_Nav.svg" alt="Always Your Beauty" />
+    </a>
+    <div id="nav-links">
+      <a class="nav-link" href="/music-works/">Music Works</a>
+      <a class="nav-link active" href="/music-videos/">Music Videos</a>
+      <a class="nav-link" href="https://www.subvert.fm/always-your-beauty" target="_blank" rel="noopener">Music Store</a>
+    </div>
+    <button id="menu-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <div id="mobile-menu" aria-hidden="true">
+    <a class="mobile-nav-link" href="/music-works/">Music Works</a>
+    <a class="mobile-nav-link active" href="/music-videos/">Music Videos</a>
+    <a class="mobile-nav-link" href="https://www.subvert.fm/always-your-beauty" target="_blank" rel="noopener">Music Store</a>
+  </div>
+
+  <!-- MAIN -->
+  <main>
+    <h1 id="page-title">Music Videos</h1>
+
+    <div id="video-grid">
+
+      <a class="video-item" href="https://www.youtube.com/watch?v=_68WpcSTN7E" target="_blank" rel="noopener">
+        <div class="video-label">Sadness Fever</div>
+        <img class="video-thumb" src="/mv-sadness-fever.jpg" alt="Sadness Fever" />
+      </a>
+
+      <a class="video-item" href="https://www.youtube.com/watch?v=V19uQN-qe3c" target="_blank" rel="noopener">
+        <div class="video-label">Rise</div>
+        <img class="video-thumb" src="/mv-rise.jpg" alt="Rise" />
+      </a>
+
+      <a class="video-item" href="https://www.youtube.com/watch?v=WbvjO1w36TA" target="_blank" rel="noopener">
+        <div class="video-label">Malanima</div>
+        <img class="video-thumb" src="/mv-malanima.jpg" alt="Malanima" />
+      </a>
+
+      <a class="video-item" href="https://www.youtube.com/watch?v=rBUIpHPwO6Y" target="_blank" rel="noopener">
+        <div class="video-label">He-Witch</div>
+        <img class="video-thumb" src="/mv-he-witch.jpg" alt="He-Witch" />
+      </a>
+
+      <a class="youtube-banner" href="https://www.youtube.com/@alwaysyourbeauty" target="_blank" rel="noopener" aria-label="Explore the full Always Your Beauty video catalogue on YouTube">
+        <div class="video-label">Full Catalogue</div>
+        <picture>
+          <source media="(max-width: 768px)" srcset="/mv-youtube-banner-mobile.jpg" />
+          <img class="youtube-banner-img" src="/mv-youtube-banner-desktop.jpg" alt="Always Your Beauty video catalogue on YouTube" />
+        </picture>
+      </a>
+
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer id="site-footer">
+    <span class="footer-text">© Always Your Beauty</span>
+    <a class="footer-text" href="https://bio.site/alwaysyourbeauty" target="_blank" rel="noopener">Music + Socials</a>
+  </footer>
+
+  <script>
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    function setMenuOpen(open) {
+      menuToggle.classList.toggle('open', open);
+      mobileMenu.classList.toggle('open', open);
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      mobileMenu.setAttribute('aria-hidden', String(!open));
+    }
+
+    menuToggle.addEventListener('click', () => {
+      setMenuOpen(!mobileMenu.classList.contains('open'));
+    });
+
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => setMenuOpen(false));
+    });
+
+    document.addEventListener('keydown', event => {
+      if (event.key === 'Escape') setMenuOpen(false);
+    });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) setMenuOpen(false);
+    });
+  </script>
+
+</body>
+</html>
